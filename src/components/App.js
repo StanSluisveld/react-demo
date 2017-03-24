@@ -5,8 +5,17 @@ import Inventory from './Inventory';
 import Fish from './Fish';
 import sampleFishes from '../sample-fishes';
 import base from '../base';
+import Perf from 'react-addons-perf';
 
 class App extends React.Component {
+
+
+	componentDidUpdate() {
+    Perf.stop()
+    Perf.printInclusive()
+    Perf.printWasted()
+  }
+
 	
 	constructor() {
 		super();
@@ -60,6 +69,7 @@ class App extends React.Component {
 	}
 
 	addFish(fish) {
+		Perf.start()
 		// this.state.fishes.fhish1 = fish;			also a possability 
 		// update state
 		const fishes = {...this.state.fishes};
@@ -78,6 +88,7 @@ class App extends React.Component {
 	}
 
 	removeFish(key){
+		Perf.start()
 		const fishes = {...this.state.fishes}
 		// delete fishes[key] kan niet vanwege firebase koppeling
 		fishes[key] = null;
@@ -87,12 +98,14 @@ class App extends React.Component {
 
 
 	loadSamples() { 
+		Perf.start();
 		this.setState({
 			fishes: sampleFishes 
 		})
 	}
 
 	addToOrder(key) {
+		Perf.start();
 		const order = {...this.state.order};
 		order[key] = order[key] + 1 || 1;
 
@@ -100,6 +113,7 @@ class App extends React.Component {
 	}
 
 	removeFromOrder(key){
+		Perf.start();
 		const order = {...this.state.order}
 		delete order[key]; // Hier zet je het niet up NULL omdat anders alleen de waarde wordt veranderd
 		this.setState({ order });
